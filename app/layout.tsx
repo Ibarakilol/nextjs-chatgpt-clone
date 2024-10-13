@@ -1,9 +1,7 @@
 import { ReactNode } from 'react';
-import { Toaster } from 'react-hot-toast';
+import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
-
-import { Sidebar } from '@/components/sidebar';
 
 import { cn } from '@/lib/utils';
 
@@ -24,15 +22,13 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <html lang="en">
-      <body
-        className={cn('flex min-h-screen bg-[#343541] font-sans antialiased', fontSans.variable)}
-      >
-        <Sidebar />
-        {children}
-        <Toaster position="top-right" reverseOrder={false} />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 };
 

@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { useUser } from '@clerk/clerk-react';
 import { Send } from 'lucide-react';
 
 import { useChats } from '@/hooks/use-chats';
@@ -13,6 +14,7 @@ interface ChatInputProps {
 }
 
 export const ChatInput = ({ chatId }: ChatInputProps) => {
+  const { user } = useUser();
   const [prompt, setPrompt] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const createMessage = useChats((state) => state.createMessage);
@@ -33,8 +35,9 @@ export const ChatInput = ({ chatId }: ChatInputProps) => {
 
       const message = {
         id: getUniqueId(),
+        avatar: user?.imageUrl,
         text: promptText,
-        userName: 'Nikita',
+        userName: user?.firstName || 'Guest',
       };
 
       createMessage(chatId, message);

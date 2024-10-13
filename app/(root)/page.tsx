@@ -1,42 +1,23 @@
-import { Sun, TriangleAlert, Zap } from 'lucide-react';
-
-import { InfoSection } from './_components/info-section';
+import { SignInButton } from '@clerk/nextjs';
+import Image from 'next/image';
 
 const RootPage = () => {
   return (
-    <div className="flex-1">
-      <div className="flex flex-col items-center justify-center h-full px-2 text-white">
-        <h1 className="text-5xl font-bold mb-20">ChatGPT</h1>
-        <div className="flex space-x-2 text-center">
-          <InfoSection
-            sectionIcon={<Sun />}
-            sectionItemTitles={[
-              '"Explain quantum computing in simple terms"',
-              '"Got any creative ideas for a 10 year old’s birthday?"',
-              '"How do I make an HTTP request in Javascript?"',
-            ]}
-            sectionTitle="Examples"
-          />
-          <InfoSection
-            sectionIcon={<Zap />}
-            sectionItemTitles={[
-              'Remembers what user said earlier in the conversation',
-              'Allows user to provide follow-up corrections',
-              'Trained to decline inappropriate requests',
-            ]}
-            sectionTitle="Capabilities"
-          />
-          <InfoSection
-            sectionIcon={<TriangleAlert />}
-            sectionItemTitles={[
-              'May occasionally generate incorrect information',
-              'May occasionally produce harmful instructions or biased content',
-              'Limited knowledge of world and events after 2021',
-            ]}
-            sectionTitle="Limitation"
-          />
+    <div className="h-full flex flex-col items-center justify-center text-center gap-8">
+      <Image
+        alt="ChatGPT Clone"
+        className="rounded-[25%]"
+        height="120"
+        priority
+        src="/chatgpt-logo.svg"
+        width="120"
+      />
+      <h1 className="text-7xl font-bold">ChatGPT Clone</h1>
+      <SignInButton mode="modal">
+        <div className="bg-[#74AA9C] w-[240px] py-2 rounded-lg text-lg cursor-pointer hover:brightness-105 text-white">
+          Sign In
         </div>
-      </div>
+      </SignInButton>
     </div>
   );
 };

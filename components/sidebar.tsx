@@ -1,5 +1,6 @@
 'use client';
 
+import { SignOutButton } from '@clerk/nextjs';
 import { LogOut } from 'lucide-react';
 
 import { useChats } from '@/hooks/use-chats';
@@ -22,13 +23,15 @@ export const Sidebar = () => {
             ))}
           </div>
         </div>
-        <div
-          className="rounded-lg px-5 py-3 text-sm flex space-x-2 hover:bg-gray-700/70 cursor-pointer text-gray-300 transition-all duration-200 ease-out items-center justify-center bg-gray-700/50"
-          role="button"
-        >
-          <LogOut className="h-4 w-4" />
-          <span>Log out</span>
-        </div>
+        <SignOutButton>
+          <div
+            className="rounded-lg px-5 py-3 text-sm flex space-x-2 hover:bg-gray-700/70 cursor-pointer text-gray-300 transition-all duration-200 ease-out items-center justify-center bg-gray-700/50"
+            role="button"
+          >
+            <LogOut className="h-4 w-4" />
+            <span>Log out</span>
+          </div>
+        </SignOutButton>
       </div>
     </div>
   );
