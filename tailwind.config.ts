@@ -12,10 +12,6 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
       },
-      colors: {
-        background: 'var(--background)',
-        foreground: 'var(--foreground)',
-      },
     },
   },
   plugins: [],
