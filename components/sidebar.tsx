@@ -1,15 +1,16 @@
 'use client';
 
 import { SignOutButton } from '@clerk/nextjs';
+import { useQuery } from 'convex/react';
 import { LogOut } from 'lucide-react';
 
-import { useChats } from '@/hooks/use-chats';
+import { api } from '@/convex/_generated/api';
 
 import { ChatRow } from './chat-row';
 import { NewChat } from './new-chat';
 
 export const Sidebar = () => {
-  const chats = useChats((state) => state.chats);
+  const chats = useQuery(api.chats.getChats);
 
   return (
     <div className="bg-[#202123] max-w-xs md:min-w-[20rem]">
@@ -18,9 +19,7 @@ export const Sidebar = () => {
           <NewChat />
           <div className="w-full bg-gray-700 h-[1px] my-2" />
           <div className="flex flex-col gap-2 overflow-y-auto pb-2">
-            {chats.map((chat) => (
-              <ChatRow key={chat.id} chat={chat} />
-            ))}
+            {chats?.map((chat) => <ChatRow key={chat._id} chatId={chat._id} />)}
           </div>
         </div>
         <SignOutButton>

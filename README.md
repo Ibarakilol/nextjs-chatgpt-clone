@@ -1,6 +1,6 @@
 # Next.js ChatGPT Clone
 
-A ChatGPT Clone web application built with Next.js, TypeScript, Tailwind CSS, Zustand, and Clerk Auth.
+A ChatGPT Clone web application built with Next.js, TypeScript, Tailwind CSS, Convex, and Clerk Auth.
 
 ## Running the project
 
@@ -24,11 +24,22 @@ npm i
 Create a `.env.local` file in the project root and set the necessary environment variables.
 
 ```
+CONVEX_DEPLOYMENT=
+NEXT_PUBLIC_CONVEX_URL=
+
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
 CLERK_SECRET_KEY=
 ```
 
-4. **Run the development server:**
+On your Convex Dashboard go to your development project's Settings tab and add to Environment Variables a key `CLERK_AUTH_URL` with Clerk auth url.
+
+4. **Run convex development server:**
+
+```bash
+npx convex dev
+```
+
+5. **On second terminal run the development server:**
 
 ```bash
 npm run dev
@@ -39,5 +50,5 @@ npm run dev
 - [Next.js](https://nextjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
-- [Zustand](https://zustand-demo.pmnd.rs/)
+- [Convex](https://convex.dev/)
 - [Clerk Auth](https://clerk.com/)

@@ -1,9 +1,11 @@
 import { Chat } from './_components/chat';
 import { ChatInput } from './_components/chat-input';
 
+import { Id } from '@/convex/_generated/dataModel';
+
 interface ChatIdPageProps {
   params: {
-    chatId: string;
+    chatId: Id<'chats'>;
   };
 }
 

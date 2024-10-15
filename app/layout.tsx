@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
-import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
 
+import { ConvexClientProvider } from '@/providers/convex-client-provider';
 import { cn } from '@/lib/utils';
 
 import './globals.css';
@@ -22,13 +22,11 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
-          {children}
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
+        <ConvexClientProvider>{children}</ConvexClientProvider>
+      </body>
+    </html>
   );
 };
 

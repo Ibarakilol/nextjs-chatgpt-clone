@@ -1,20 +1,20 @@
 import Image from 'next/image';
 
+import { Doc } from '@/convex/_generated/dataModel';
 import { cn } from '@/lib/utils';
-import { IMessage } from '@/interfaces';
 
 interface ChatMessageProps {
-  message: IMessage;
+  message: Doc<'messages'>;
 }
 
 export const ChatMessage = ({ message }: ChatMessageProps) => {
-  const isChatGPT = message.userName === 'ChatGPT';
+  const altName = message.isChatGPT ? 'ChatGPT' : 'User';
 
   return (
-    <div className={cn('py-5 text-white', isChatGPT && 'bg-[#434654]')}>
+    <div className={cn('py-5 text-white', message.isChatGPT && 'bg-[#434654]')}>
       <div className="flex space-x-5 px-10 max-w-2xl mx-auto items-center">
         <Image
-          alt={message.userName}
+          alt={altName}
           className="rounded-[25%] self-start"
           height="32"
           src={message?.avatar || '/chatgpt-logo.svg'}

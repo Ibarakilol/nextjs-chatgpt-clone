@@ -1,20 +1,18 @@
 'use client';
 
+import { useMutation } from 'convex/react';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-import { useChats } from '@/hooks/use-chats';
 import { AppRoute } from '@/constants';
-import { getUniqueId } from '@/utils';
+import { api } from '@/convex/_generated/api';
 
 export const NewChat = () => {
   const router = useRouter();
-  const createChat = useChats((state) => state.createChat);
+  const createChat = useMutation(api.chats.createChat);
 
   const handleCreateChat = () => {
-    const chatId = getUniqueId();
-    createChat(chatId);
-    router.push(`${AppRoute.CHAT}/${chatId}`);
+    createChat().then((chatId) => router.push(`${AppRoute.CHAT}/${chatId}`));
   };
 
   return (

@@ -3,21 +3,22 @@
 import { FormEvent, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useUser } from '@clerk/clerk-react';
-import { Send } from 'lucide-react';
+import { useMutation } from 'convex/react';
+import { Loader, Send } from 'lucide-react';
 
-import { useChats } from '@/hooks/use-chats';
+import { api } from '@/convex/_generated/api';
+import { Id } from '@/convex/_generated/dataModel';
 import { getChatResponse } from '@/lib/chatgpt';
-import { getUniqueId } from '@/utils';
 
 interface ChatInputProps {
-  chatId: string;
+  chatId: Id<'chats'>;
 }
 
 export const ChatInput = ({ chatId }: ChatInputProps) => {
   const { user } = useUser();
   const [prompt, setPrompt] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const createMessage = useChats((state) => state.createMessage);
+  const createMessage = useMutation(api.messages.createMessage);
 
   const generateChatResponse = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,24 +34,11 @@ export const ChatInput = ({ chatId }: ChatInputProps) => {
       setIsLoading(true);
       toast.loading('Thinking...');
 
-      const message = {
-        id: getUniqueId(),
-        avatar: user?.imageUrl,
-        text: promptText,
-        userName: user?.firstName || 'Guest',
-      };
-
-      createMessage(chatId, message);
+      createMessage({ avatar: user?.imageUrl, chatId, isChatGPT: false, text: promptText });
 
       const chatResponse = await getChatResponse(promptText);
 
-      const chatMessage = {
-        id: getUniqueId(),
-        text: chatResponse,
-        userName: 'ChatGPT',
-      };
-
-      createMessage(chatId, chatMessage);
+      createMessage({ chatId, isChatGPT: true, text: chatResponse });
 
       toast.dismiss();
       setIsLoading(false);
@@ -76,7 +64,7 @@ export const ChatInput = ({ chatId }: ChatInputProps) => {
           disabled={!prompt || isLoading}
           type="submit"
         >
-          <Send className="h-4 w-4" />
+          {isLoading ? <Loader className="h-4 w-4" /> : <Send className="h-4 w-4" />}
         </button>
       </form>
     </div>

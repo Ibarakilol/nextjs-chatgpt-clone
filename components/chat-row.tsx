@@ -1,25 +1,25 @@
 'use client';
 
 import { MouseEvent, useEffect, useState } from 'react';
+import { useMutation } from 'convex/react';
 import { MessageSquare, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
-import { useChats } from '@/hooks/use-chats';
 import { AppRoute } from '@/constants';
+import { api } from '@/convex/_generated/api';
+import { Id } from '@/convex/_generated/dataModel';
 import { cn } from '@/lib/utils';
-import { IChat } from '@/interfaces';
 
 interface ChatRowProps {
-  chat: IChat;
+  chatId: Id<'chats'>;
 }
 
-export const ChatRow = ({ chat }: ChatRowProps) => {
-  const { id: chatId, messages } = chat;
+export const ChatRow = ({ chatId }: ChatRowProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const [activeChat, setActiveChat] = useState<boolean>(false);
-  const removeChat = useChats((state) => state.removeChat);
+  const deleteChat = useMutation(api.chats.deleteChat);
 
   useEffect(() => {
     if (!pathname) {
@@ -32,8 +32,7 @@ export const ChatRow = ({ chat }: ChatRowProps) => {
   const handleRemoveChat = (e: MouseEvent<SVGSVGElement>) => {
     e.preventDefault();
 
-    removeChat(chatId);
-    router.push(AppRoute.ROOT);
+    deleteChat({ id: chatId }).then(() => router.push(AppRoute.ROOT));
   };
 
   return (
@@ -45,9 +44,7 @@ export const ChatRow = ({ chat }: ChatRowProps) => {
       href={`${AppRoute.CHAT}/${chatId}`}
     >
       <MessageSquare className="h-5 w-5" />
-      <span className="flex-1 hidden md:inline-block truncate">
-        {messages[messages.length - 1]?.text || 'New Chat'}
-      </span>
+      <span className="flex-1 hidden md:inline-block truncate">New Chat</span>
       <Trash2
         className="h-5 w-5 text-gray-700 hover:text-red-700"
         role="button"
