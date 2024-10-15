@@ -41,10 +41,11 @@ export const ChatInput = ({ chatId }: ChatInputProps) => {
       createMessage({ chatId, isChatGPT: true, text: chatResponse });
 
       toast.dismiss();
-      setIsLoading(false);
     } catch (err) {
       console.log(err);
       toast.error('Error getting response!');
+    } finally {
+      setIsLoading(false);
     }
   };
 
