@@ -38,7 +38,7 @@ export const ChatRow = ({ chatId }: ChatRowProps) => {
   return (
     <Link
       className={cn(
-        'rounded-lg px-5 py-3 text-sm flex items-center justify-center space-x-2 hover:bg-gray-700/70 cursor-pointer text-gray-300 transition-all duration-200 ease-out',
+        'rounded-lg px-5 py-3 text-sm flex w-full items-center justify-center space-x-2 hover:bg-gray-700/70 cursor-pointer text-gray-300 transition-all duration-200 ease-out',
         activeChat && 'bg-gray-700/50'
       )}
       href={`${AppRoute.CHAT}/${chatId}`}

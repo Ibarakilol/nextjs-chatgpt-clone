@@ -10,37 +10,45 @@ export const createMessage = mutation({
     text: v.string(),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
+    try {
+      const identity = await ctx.auth.getUserIdentity();
 
-    if (!identity) {
-      throw new Error('Not authenticated');
+      if (!identity) {
+        throw new Error('Not authenticated');
+      }
+
+      const message = await ctx.db.insert('messages', {
+        avatar: args.avatar,
+        chatId: args.chatId,
+        isChatGPT: args.isChatGPT,
+        text: args.text,
+      });
+
+      return message;
+    } catch (err) {
+      console.log(err);
     }
-
-    const message = await ctx.db.insert('messages', {
-      avatar: args.avatar,
-      chatId: args.chatId,
-      isChatGPT: args.isChatGPT,
-      text: args.text,
-    });
-
-    return message;
   },
 });
 
 export const getMessages = query({
   args: { chatId: v.id('chats') },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
+    try {
+      const identity = await ctx.auth.getUserIdentity();
 
-    if (!identity) {
-      throw new Error('Not authenticated');
+      if (!identity) {
+        throw new Error('Not authenticated');
+      }
+
+      const messages = await ctx.db
+        .query('messages')
+        .withIndex('by_chat', (q) => q.eq('chatId', args.chatId))
+        .collect();
+
+      return messages;
+    } catch (err) {
+      console.log(err);
     }
-
-    const messages = await ctx.db
-      .query('messages')
-      .withIndex('by_chat', (q) => q.eq('chatId', args.chatId))
-      .collect();
-
-    return messages;
   },
 });
